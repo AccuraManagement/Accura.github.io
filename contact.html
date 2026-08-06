@@ -339,7 +339,7 @@
 
             <div class="contact-detail-item">
               <div class="contact-detail-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 14 16 14"/></svg>
               </div>
               <div>
                 <div class="contact-detail-label">Operating Hours</div>
@@ -359,20 +359,21 @@
             Thank you. Your strategic brief has been logged. Our advisory team will reach out within 24 hours.
           </div>
 
-          <form id="contactForm" onsubmit="handleSubmit(event)">
+          <!-- Integracja z Formspree wysyłająca maile na contact@accuramanagement.pl -->
+          <form id="contactForm" action="https://formspree.io/f/contact@accuramanagement.pl" method="POST">
             <div class="form-group">
               <label class="form-label" for="name">Your Full Name</label>
-              <input type="text" id="name" class="form-input" placeholder="e.g. Alexander Vance" required>
+              <input type="text" id="name" name="name" class="form-input" placeholder="e.g. Alexander Vance" required>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="email">Business Email</label>
-              <input type="email" id="email" class="form-input" placeholder="e.g. alexander@enterprise.com" required>
+              <input type="email" id="email" name="email" class="form-input" placeholder="e.g. alexander@enterprise.com" required>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="tier">Target Service Tier</label>
-              <select id="tier" class="form-select">
+              <select id="tier" name="tier" class="form-select">
                 <option value="core">Core Growth Retainer</option>
                 <option value="dominance">Market Dominance Architecture</option>
                 <option value="enterprise">Bespoke Enterprise Scope</option>
@@ -381,10 +382,10 @@
 
             <div class="form-group">
               <label class="form-label" for="message">Project Brief / Strategic Goals</label>
-              <textarea id="message" class="form-textarea" placeholder="Detail your primary brand objectives, current metrics, and timeline..." required></textarea>
+              <textarea id="message" name="message" class="form-textarea" placeholder="Detail your primary brand objectives, current metrics, and timeline..." required></textarea>
             </div>
 
-            <button type="submit" class="btn-submit">Submit Briefing</button>
+            <button type="submit" class="btn-submit" id="submitBtn">Submit Briefing</button>
           </form>
         </div>
 
@@ -458,14 +459,47 @@
       });
     });
 
-    function handleSubmit(e) {
-      e.preventDefault();
-      document.getElementById('formStatus').style.display = 'block';
-      document.getElementById('contactForm').reset();
-      setTimeout(() => {
-        document.getElementById('formStatus').style.display = 'none';
-      }, 6000);
-    }
+    // Obsługa wysyłania formularza przez Fetch API (AJAX)
+    const form = document.getElementById('contactForm');
+    const formStatus = document.getElementById('formStatus');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Sending...';
+
+      const data = new FormData(event.target);
+
+      try {
+        const response = await fetch(event.target.action, {
+          method: form.method,
+          body: data,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          formStatus.style.display = 'block';
+          formStatus.innerText = 'Thank you. Your strategic brief has been logged. Our advisory team will reach out within 24 hours.';
+          form.reset();
+        } else {
+          const result = await response.json();
+          formStatus.style.display = 'block';
+          formStatus.innerText = result.errors ? result.errors.map(error => error.message).join(", ") : "Oops! There was a problem submitting your form";
+        }
+      } catch (error) {
+        formStatus.style.display = 'block';
+        formStatus.innerText = "Oops! There was a problem submitting your form";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Submit Briefing';
+        setTimeout(() => {
+          formStatus.style.display = 'none';
+        }, 8000);
+      }
+    });
   </script>
 </body>
 </html>
