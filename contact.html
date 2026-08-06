@@ -40,6 +40,7 @@
       font-family: var(--font-sans);
       font-size: 16px;
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
     body {
@@ -76,18 +77,56 @@
     }
     .tag::before { content: ''; width: 6px; height: 6px; background-color: var(--accent-bronze); border-radius: 50%; }
 
-    /* Navbar */
+    /* Navbar Header */
     .navbar { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 24px 0; transition: var(--transition-smooth); }
-    .navbar.scrolled { padding: 16px 0; background: rgba(13, 12, 11, 0.88); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); }
+    .navbar.scrolled { padding: 16px 0; background: rgba(13, 12, 11, 0.88); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); }
     .nav-container { display: flex; justify-content: space-between; align-items: center; }
-    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo { display: flex; align-items: center; gap: 12px; z-index: 1002; }
     .logo-mark { width: 40px; height: 40px; border: 1px solid var(--border-color-strong); display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 1.3rem; color: var(--accent-bronze); background: var(--bg-card); border-radius: 4px; }
     .logo-text { font-family: var(--font-serif); font-size: 1.35rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-cream); }
     .logo-text span { display: block; font-family: var(--font-sans); font-size: 0.6rem; letter-spacing: 0.3em; color: var(--accent-bronze); }
+    
     .nav-links { display: flex; align-items: center; gap: 40px; list-style: none; }
     .nav-links a { font-size: 0.82rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); transition: var(--transition-smooth); }
     .nav-links a.active, .nav-links a:hover { color: var(--text-cream); }
+    
     .btn-nav { padding: 10px 24px; border: 1px solid var(--border-color-strong); background: rgba(197, 181, 161, 0.03); color: var(--text-cream); font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; border-radius: 2px; cursor: pointer; transition: var(--transition-smooth); }
+
+    /* Menu Toggle Button */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 28px;
+      height: 18px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 1002;
+      padding: 0;
+    }
+
+    .menu-toggle span {
+      width: 100%;
+      height: 2px;
+      background-color: var(--text-cream);
+      border-radius: 2px;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, background-color 0.3s ease;
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      background-color: var(--accent-bronze);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      background-color: var(--accent-bronze);
+    }
 
     /* Contact Grid Layout */
     .contact-grid {
@@ -198,6 +237,43 @@
     @media (max-width: 992px) {
       .contact-grid { grid-template-columns: 1fr; }
     }
+
+    @media (max-width: 768px) {
+      .menu-toggle { display: flex; }
+
+      .nav-links {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(13, 12, 11, 0.96);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 32px;
+        z-index: 1001;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+      }
+
+      .nav-links.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .nav-links a {
+        font-size: 1.1rem;
+        letter-spacing: 0.2em;
+      }
+
+      .nav-cta-item { margin-top: 15px; }
+      .contact-info-card, .contact-form-container { padding: 30px 20px; }
+      .footer-top, .footer-bottom { flex-direction: column; gap: 20px; text-align: center; }
+    }
   </style>
 </head>
 <body>
@@ -212,14 +288,20 @@
         <div class="logo-text">ACCURA<span>MANAGEMENT</span></div>
       </a>
 
-      <ul class="nav-links">
+      <!-- Menu Toggle dla smartfonów -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="nav-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
         <li><a href="plans.html">Plans & Retainers</a></li>
         <li><a href="tos.html">Legal & TOS</a></li>
         <li><a href="contact.html" class="active">Contact</a></li>
+        <li class="nav-cta-item"><a href="contact.html" class="btn-nav">Inquire</a></li>
       </ul>
-
-      <a href="contact.html" class="btn-nav">Inquire</a>
     </div>
   </nav>
 
@@ -277,34 +359,29 @@
             Thank you. Your strategic brief has been logged. Our advisory team will reach out within 24 hours.
           </div>
 
-          <!-- CONNECTED TO FORMSUBMIT FOR ACCURA.CONTACT@GMAIL.COM -->
-          <form id="contactForm" action="https://formsubmit.co/accura.contact@gmail.com" method="POST">
-            <!-- Form Configuration -->
-            <input type="hidden" name="_subject" value="New Inquiry - Accura Management Website">
-            <input type="hidden" name="_captcha" value="false">
-
+          <form id="contactForm" onsubmit="handleSubmit(event)">
             <div class="form-group">
               <label class="form-label" for="name">Your Full Name</label>
-              <input type="text" id="name" name="Full Name" class="form-input" placeholder="e.g. Alexander Vance" required>
+              <input type="text" id="name" class="form-input" placeholder="e.g. Alexander Vance" required>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="email">Business Email</label>
-              <input type="email" id="email" name="Email Address" class="form-input" placeholder="e.g. alexander@enterprise.com" required>
+              <input type="email" id="email" class="form-input" placeholder="e.g. alexander@enterprise.com" required>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="tier">Target Service Tier</label>
-              <select id="tier" name="Target Service Tier" class="form-select">
-                <option value="Core Growth Retainer">Core Growth Retainer</option>
-                <option value="Market Dominance Architecture">Market Dominance Architecture</option>
-                <option value="Bespoke Enterprise Scope">Bespoke Enterprise Scope</option>
+              <select id="tier" class="form-select">
+                <option value="core">Core Growth Retainer</option>
+                <option value="dominance">Market Dominance Architecture</option>
+                <option value="enterprise">Bespoke Enterprise Scope</option>
               </select>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="message">Project Brief / Strategic Goals</label>
-              <textarea id="message" name="Project Brief" class="form-textarea" placeholder="Detail your primary brand objectives, current metrics, and timeline..." required></textarea>
+              <textarea id="message" class="form-textarea" placeholder="Detail your primary brand objectives, current metrics, and timeline..." required></textarea>
             </div>
 
             <button type="submit" class="btn-submit">Submit Briefing</button>
@@ -361,33 +438,33 @@
         if (window.scrollY > 50) navbar.classList.add('scrolled');
         else navbar.classList.remove('scrolled');
       });
+
+      // Mobile Menu
+      const menuToggle = document.getElementById('menuToggle');
+      const navLinks = document.getElementById('navLinks');
+
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+      });
+
+      document.querySelectorAll('#navLinks a').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navLinks.classList.remove('active');
+          document.body.style.overflow = 'auto';
+        });
+      });
     });
 
     function handleSubmit(e) {
       e.preventDefault();
-      const form = e.target;
-      const status = document.getElementById('formStatus');
-
-      // Send form data asynchronously via AJAX
-      fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: {
-          'Accept': 'application/json'
-        }
-      }).then(response => {
-        if (response.ok) {
-          status.style.display = 'block';
-          form.reset();
-          setTimeout(() => {
-            status.style.display = 'none';
-          }, 6000);
-        } else {
-          alert('There was a problem submitting your brief. Please try again.');
-        }
-      }).catch(error => {
-        alert('There was a problem submitting your brief. Please try again.');
-      });
+      document.getElementById('formStatus').style.display = 'block';
+      document.getElementById('contactForm').reset();
+      setTimeout(() => {
+        document.getElementById('formStatus').style.display = 'none';
+      }, 6000);
     }
   </script>
 </body>

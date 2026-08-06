@@ -66,7 +66,6 @@
       color: var(--bg-dark);
     }
 
-    /* Floating Ambient Mesh */
     .ambient-glow {
       position: fixed;
       width: 600px;
@@ -79,7 +78,6 @@
       transition: transform 0.2s ease-out;
     }
 
-    /* Scroll Animation Engine */
     .animate-on-scroll {
       opacity: 0;
       will-change: opacity, transform;
@@ -158,7 +156,7 @@
       line-height: 1.8;
     }
 
-    /* Navbar */
+    /* Navbar Header */
     .navbar {
       position: fixed;
       top: 0;
@@ -187,6 +185,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      z-index: 1002;
     }
 
     .logo-mark {
@@ -275,6 +274,42 @@
       color: var(--bg-dark);
       border-color: var(--accent-bronze);
       box-shadow: 0 0 25px rgba(197, 181, 161, 0.25);
+    }
+
+    /* Hamburger Toggle Menu Button */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 28px;
+      height: 18px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 1002;
+      padding: 0;
+    }
+
+    .menu-toggle span {
+      width: 100%;
+      height: 2px;
+      background-color: var(--text-cream);
+      border-radius: 2px;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, background-color 0.3s ease;
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      background-color: var(--accent-bronze);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      background-color: var(--accent-bronze);
     }
 
     /* Hero */
@@ -370,7 +405,6 @@
       margin-bottom: 70px;
     }
 
-    /* Dynamic Tilt Cards */
     .tilt-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -385,7 +419,6 @@
       box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(197, 181, 161, 0.05);
     }
 
-    /* Stats Grid */
     .hero-stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -464,7 +497,7 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* Bento Grid */
+    /* About Section */
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -791,6 +824,7 @@
 
     .cookie-btn:hover { background: var(--text-cream); }
 
+    /* Media Queries & Responsive Design */
     @media (max-width: 992px) {
       .about-grid, .features-grid { grid-template-columns: 1fr; }
       .timeline-wrapper::before { left: 20px; }
@@ -802,10 +836,45 @@
     }
 
     @media (max-width: 768px) {
-      .nav-links { display: none; }
+      .menu-toggle { display: flex; }
+
+      .nav-links {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(13, 12, 11, 0.96);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 32px;
+        z-index: 1001;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+      }
+
+      .nav-links.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .nav-links a {
+        font-size: 1.1rem;
+        letter-spacing: 0.2em;
+      }
+
+      .nav-cta-item {
+        margin-top: 15px;
+      }
+
       .hero-cta-group { flex-direction: column; }
       .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
       .footer-top, .footer-bottom { flex-direction: column; gap: 20px; text-align: center; }
+      .cookie-banner { left: 15px; right: 15px; max-width: none; }
     }
   </style>
 </head>
@@ -824,15 +893,23 @@
         </div>
       </a>
 
-      <ul class="nav-links">
+      <!-- Menu Toggle dla smartfonów -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="nav-links" id="navLinks">
         <li><a href="index.html" class="active">Home</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="plans.html">Plans & Retainers</a></li>
         <li><a href="tos.html">Legal & TOS</a></li>
         <li><a href="contact.html">Contact</a></li>
+        <li class="nav-cta-item"><a href="contact.html" class="btn-nav">Inquire</a></li>
       </ul>
 
-      <a href="contact.html" class="btn-nav">Inquire</a>
+      <a href="contact.html" class="btn-nav desktop-only-btn" style="display: none;">Inquire</a>
     </div>
   </nav>
 
@@ -927,7 +1004,6 @@
 
       </div>
 
-      <!-- Bento Grid Highlights -->
       <div class="features-grid">
         <div class="feature-card tilt-card animate-on-scroll fade-up delay-1">
           <div class="feature-icon">
@@ -965,7 +1041,7 @@
     </div>
   </section>
 
-  <!-- TIMELINE / JOURNEY -->
+  <!-- TIMELINE -->
   <section class="section-padding" style="background: var(--bg-card);">
     <div class="container">
       <div style="text-align: center; max-width: 700px; margin: 0 auto;">
@@ -1107,7 +1183,6 @@
       ambientGlow.style.top = e.clientY + 'px';
     });
 
-    // Intersection Observer Engine
     document.addEventListener('DOMContentLoaded', () => {
       const observerOptions = { threshold: 0.15 };
       const observer = new IntersectionObserver((entries) => {
@@ -1129,10 +1204,29 @@
         else navbar.classList.remove('scrolled');
       });
 
+      // Hamburger Menu Engine
+      const menuToggle = document.getElementById('menuToggle');
+      const navLinks = document.getElementById('navLinks');
+
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+      });
+
+      document.querySelectorAll('#navLinks a').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navLinks.classList.remove('active');
+          document.body.style.overflow = 'auto';
+        });
+      });
+
       // 3D Card Tilt Effect
       const tiltCards = document.querySelectorAll('.tilt-card');
       tiltCards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
+          if (window.innerWidth <= 768) return; // wyłącz na telefonach
           const rect = card.getBoundingClientRect();
           const x = e.clientX - rect.left - rect.width / 2;
           const y = e.clientY - rect.top - rect.height / 2;

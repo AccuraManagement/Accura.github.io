@@ -40,6 +40,7 @@
       font-family: var(--font-sans);
       font-size: 16px;
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
     body {
@@ -63,7 +64,6 @@
       transform: translate(-50%, -50%);
     }
 
-    /* Scroll Engine */
     .animate-on-scroll {
       opacity: 0;
       will-change: opacity, transform;
@@ -93,18 +93,18 @@
       content: ''; width: 6px; height: 6px; background-color: var(--accent-bronze); border-radius: 50%;
     }
 
-    /* Navbar */
+    /* Navbar Header */
     .navbar {
       position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 24px 0; transition: var(--transition-smooth);
     }
 
     .navbar.scrolled {
-      padding: 16px 0; background: rgba(13, 12, 11, 0.88); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color);
+      padding: 16px 0; background: rgba(13, 12, 11, 0.88); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color);
     }
 
     .nav-container { display: flex; justify-content: space-between; align-items: center; }
 
-    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo { display: flex; align-items: center; gap: 12px; z-index: 1002; }
     .logo-mark {
       width: 40px; height: 40px; border: 1px solid var(--border-color-strong); display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 1.3rem; color: var(--accent-bronze); background: var(--bg-card); border-radius: 4px;
     }
@@ -119,6 +119,42 @@
       padding: 10px 24px; border: 1px solid var(--border-color-strong); background: rgba(197, 181, 161, 0.03); color: var(--text-cream); font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; border-radius: 2px; cursor: pointer; transition: var(--transition-smooth);
     }
     .btn-nav:hover { background: var(--accent-bronze); color: var(--bg-dark); }
+
+    /* Menu Toggle Button */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 28px;
+      height: 18px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 1002;
+      padding: 0;
+    }
+
+    .menu-toggle span {
+      width: 100%;
+      height: 2px;
+      background-color: var(--text-cream);
+      border-radius: 2px;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, background-color 0.3s ease;
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      background-color: var(--accent-bronze);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      background-color: var(--accent-bronze);
+    }
 
     /* Content Layout */
     .legal-header { text-align: center; margin-bottom: 70px; }
@@ -151,28 +187,6 @@
       margin-bottom: 24px;
     }
 
-    .legal-list {
-      list-style: none;
-      margin-bottom: 24px;
-    }
-
-    .legal-list li {
-      position: relative;
-      padding-left: 28px;
-      margin-bottom: 12px;
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-
-    .legal-list li::before {
-      content: '◆';
-      position: absolute;
-      left: 0;
-      color: var(--accent-bronze);
-      font-size: 0.7rem;
-      top: 4px;
-    }
-
     /* Footer */
     .footer { background: #080707; border-top: 1px solid var(--border-color); padding: 70px 0 35px 0; }
     .footer-top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 40px; border-bottom: 1px solid var(--border-color); }
@@ -181,8 +195,39 @@
     .footer-bottom { padding-top: 35px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-dim); }
 
     @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .legal-card { padding: 30px; }
+      .menu-toggle { display: flex; }
+
+      .nav-links {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(13, 12, 11, 0.96);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 32px;
+        z-index: 1001;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+      }
+
+      .nav-links.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .nav-links a {
+        font-size: 1.1rem;
+        letter-spacing: 0.2em;
+      }
+
+      .nav-cta-item { margin-top: 15px; }
+      .legal-card { padding: 30px 20px; }
       .footer-top, .footer-bottom { flex-direction: column; gap: 20px; text-align: center; }
     }
   </style>
@@ -199,14 +244,20 @@
         <div class="logo-text">ACCURA<span>MANAGEMENT</span></div>
       </a>
 
-      <ul class="nav-links">
+      <!-- Menu Toggle dla smartfonów -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="nav-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
         <li><a href="plans.html">Plans & Retainers</a></li>
         <li><a href="tos.html" class="active">Legal & TOS</a></li>
         <li><a href="contact.html">Contact</a></li>
+        <li class="nav-cta-item"><a href="contact.html" class="btn-nav">Inquire</a></li>
       </ul>
-
-      <a href="contact.html" class="btn-nav">Inquire</a>
     </div>
   </nav>
 
@@ -295,42 +346,42 @@
         </p>
       </div>
 
-            <div class="legal-card animate-on-scroll fade-up">
+      <div class="legal-card animate-on-scroll fade-up">
         <h2 class="legal-section-title">10. Client Responsibilities & Asset Approvals</h2>
         <p class="legal-text">
          To maintain campaign velocity, the Client is required to provide necessary access tokens, materials, and internal feedback within a reasonable timeframe (not exceeding 5 business days from the request). Failure to deliver required media or feedback on time relieves Accura Management from any project delays. Furthermore, once a strategy blueprint or digital media file is formally approved by the Client, the Company is not responsible for any errors discovered after deployment.
         </p>
       </div>
 
-            <div class="legal-card animate-on-scroll fade-up">
+      <div class="legal-card animate-on-scroll fade-up">
         <h2 class="legal-section-title">11. Intellectual Property Protection (No-Derivatives)</h2>
         <p class="legal-text">
          All custom blueprints, growth workflows, PR systems, and operational methodologies shared with the Client during consulting sessions or campaigns remain the intellectual property of Accura Management. Clients are granted a non-exclusive, non-transferable license to use these models for their own brand only. Sharing, reselling, or repackaging our internal growth strategies for external business entities or competitors is strictly illegal and will result in immediate termination of service and legal action.
         </p>
       </div>
 
-            <div class="legal-card animate-on-scroll fade-up">
+      <div class="legal-card animate-on-scroll fade-up">
         <h2 class="legal-section-title">12. Payment Terms, Default & Refund Policy</h2>
         <p class="legal-text">
          All retainers, configuration fees, and campaign budgets are billed in advance according to the chosen plan (Starter, Growth, Pro, Ultimate). Due to the direct allocation of technical hours, structural mapping, and digital labor, all payments made to Accura Management are strictly non-refundable. If a client attempts an unauthorized chargeback or payment reversal through financial institutions without prior written mediation, we reserve the right to suspend all active service nodes immediately and claim administrative recovery fees.
         </p>
       </div>
 
-            <div class="legal-card animate-on-scroll fade-up">
+      <div class="legal-card animate-on-scroll fade-up">
         <h2 class="legal-section-title">13. Service Termination & Offboarding</h2>
         <p class="legal-text">
          Either party may terminate an ongoing monthly service subscription by providing written notice at least 14 days prior to the next billing cycle. Upon termination, all client access keys and access rights will be revoked, and Accura Management will safely offboard all managed assets. No data or partial operational assets will be transferred if there are outstanding invoices on the client's account.
         </p>
       </div>
 
-            <div class="legal-card animate-on-scroll fade-up">
+      <div class="legal-card animate-on-scroll fade-up">
         <h2 class="legal-section-title">14. Indemnification</h2>
         <p class="legal-text">
          The Client agrees to defend, indemnify, and hold harmless Accura Management, its directors, and employees from any claims, damages, liabilities, or legal expenses arising out of any copyright infringement, trademark disputes, or misleading claims present within the materials supplied by the Client for campaign distribution.
         </p>
       </div>
 
-            <div class="legal-card animate-on-scroll fade-up">
+      <div class="legal-card animate-on-scroll fade-up">
         <h2 class="legal-section-title">15. Amendments to These Terms</h2>
         <p class="legal-text">
          Accura Management reserves the right to modify, adjust, or completely update these Terms of Service at any time without individual direct notification. The most current operational version will always be live at accuramanagement.pl/terms.html. Continued usage of our web platform or engagement in our management cycles after updates are published constitutes absolute acceptance of the revised framework.
@@ -385,6 +436,24 @@
       window.addEventListener('scroll', () => {
         if (window.scrollY > 50) navbar.classList.add('scrolled');
         else navbar.classList.remove('scrolled');
+      });
+
+      // Mobile Menu
+      const menuToggle = document.getElementById('menuToggle');
+      const navLinks = document.getElementById('navLinks');
+
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+      });
+
+      document.querySelectorAll('#navLinks a').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navLinks.classList.remove('active');
+          document.body.style.overflow = 'auto';
+        });
       });
     });
   </script>
