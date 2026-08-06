@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service & Legal Infrastructure | Accura Management</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0D0C0B;
+      --bg-card: #151311;
+      --bg-card-hover: #1D1A17;
+      --border-color: rgba(197, 181, 161, 0.12);
+      --border-color-strong: rgba(197, 181, 161, 0.35);
+
+      --text-cream: #F4ECE1;
+      --text-muted: #B8AC9E;
+      --text-dim: #7E7367;
+
+      --accent-bronze: #C5B5A1;
+      --accent-warm: #9E8A78;
+      --accent-glow: rgba(197, 181, 161, 0.15);
+
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      
+      --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-dark);
+      color: var(--text-cream);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(197, 181, 161, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 85% 65%, rgba(158, 138, 120, 0.04) 0%, transparent 45%);
+      background-attachment: fixed;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .ambient-glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(197, 181, 161, 0.05) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Scroll Engine */
+    .animate-on-scroll {
+      opacity: 0;
+      will-change: opacity, transform;
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fade-up { transform: translateY(40px); }
+    .animate-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+
+    .container { width: 90%; max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+    .section-padding { padding: 140px 0 100px 0; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent-bronze);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .tag::before {
+      content: ''; width: 6px; height: 6px; background-color: var(--accent-bronze); border-radius: 50%;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 24px 0; transition: var(--transition-smooth);
+    }
+
+    .navbar.scrolled {
+      padding: 16px 0; background: rgba(13, 12, 11, 0.88); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-container { display: flex; justify-content: space-between; align-items: center; }
+
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-mark {
+      width: 40px; height: 40px; border: 1px solid var(--border-color-strong); display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 1.3rem; color: var(--accent-bronze); background: var(--bg-card); border-radius: 4px;
+    }
+    .logo-text { font-family: var(--font-serif); font-size: 1.35rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-cream); }
+    .logo-text span { display: block; font-family: var(--font-sans); font-size: 0.6rem; letter-spacing: 0.3em; color: var(--accent-bronze); }
+
+    .nav-links { display: flex; align-items: center; gap: 40px; list-style: none; }
+    .nav-links a { font-size: 0.82rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); transition: var(--transition-smooth); }
+    .nav-links a.active, .nav-links a:hover { color: var(--text-cream); }
+
+    .btn-nav {
+      padding: 10px 24px; border: 1px solid var(--border-color-strong); background: rgba(197, 181, 161, 0.03); color: var(--text-cream); font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; border-radius: 2px; cursor: pointer; transition: var(--transition-smooth);
+    }
+    .btn-nav:hover { background: var(--accent-bronze); color: var(--bg-dark); }
+
+    /* Content Layout */
+    .legal-header { text-align: center; margin-bottom: 70px; }
+    .legal-title { font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4.2rem); font-weight: 300; margin-bottom: 20px; }
+    .legal-title em { color: var(--accent-bronze); font-style: italic; }
+
+    .legal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 60px;
+      margin-bottom: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .legal-section-title {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      color: var(--accent-bronze);
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .legal-text {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      font-weight: 300;
+      margin-bottom: 24px;
+    }
+
+    .legal-list {
+      list-style: none;
+      margin-bottom: 24px;
+    }
+
+    .legal-list li {
+      position: relative;
+      padding-left: 28px;
+      margin-bottom: 12px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .legal-list li::before {
+      content: '◆';
+      position: absolute;
+      left: 0;
+      color: var(--accent-bronze);
+      font-size: 0.7rem;
+      top: 4px;
+    }
+
+    /* Footer */
+    .footer { background: #080707; border-top: 1px solid var(--border-color); padding: 70px 0 35px 0; }
+    .footer-top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 40px; border-bottom: 1px solid var(--border-color); }
+    .footer-links { display: flex; gap: 32px; list-style: none; }
+    .footer-links a { font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+    .footer-bottom { padding-top: 35px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-dim); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .legal-card { padding: 30px; }
+      .footer-top, .footer-bottom { flex-direction: column; gap: 20px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-glow" id="ambientGlow"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <img src="assets/images/aasd-96x96.png" width="40px">
+        <div class="logo-text">ACCURA<span>MANAGEMENT</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="plans.html">Plans & Retainers</a></li>
+        <li><a href="tos.html" class="active">Legal & TOS</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+
+      <a href="contact.html" class="btn-nav">Inquire</a>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <section class="section-padding">
+    <div class="container">
+      
+      <div class="legal-header animate-on-scroll fade-up">
+        <div class="tag">Governance & Regulatory Framework</div>
+        <h1 class="legal-title">Terms of Service & <em>Privacy Protocol</em></h1>
+        <p style="color: var(--text-muted); font-weight: 300;">Last revised: January 2026</p>
+      </div>
+
+      <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">1. Agreement to Terms</h2>
+        <p class="legal-text">
+          By accessing and utilizing the website accuramanagement.pl and engaging with any branding frameworks deployed by Accura Management ("Company", "we", "us", or "our"), you explicitly agree to fulfill and be legally bound by these Terms of Service. If you disagree with any specified guidelines, you are prohibited from utilizing our site interfaces or submission assets.
+        </p>
+      </div>
+
+      <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">2. Business Operations & Services</h2>
+        <p class="legal-text">
+          Accura Management functions as a premium Growth Architect agency specializing in audience acceleration and organic brand presence scaling. Our dynamic operating services encompass:
+        </p>
+        <p class="legal-text">
+          <strong>Account Management:</strong> Complete operational management, content distribution architecture, and performance continuity.
+        </p>
+         <p class="legal-text">
+          <strong>Growth Strategies:</strong> Tailor-made organic expansion maps focused on user retention, strategic outreach, and market-share scaling.
+        </p>
+        <p class="legal-text">
+          <strong>Public Relations (PR):</strong> Strategic identity building, authority engineering, and third-party media narrative alignment.
+        </p>
+        <p class="legal-text">
+          <strong>Ad Campaigns & Collaborations:</strong> Implementation and monitoring of highly target-efficient digital advertising systems and strategic creator matching.
+        </p>
+      </div>
+
+      <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">3. Tiered Service Inquiries</h2>
+        <p class="legal-text">
+         We provide explicitly tiered digital growth programs (Starter, Growth, Pro, and Ultimate) structured to match creative or enterprise resource requirements. All official corporate communication, budget parameters, and contract scoping inquiries must proceed directly via our <strong>verified Business Inquiry Contact Form on the main page</strong>.
+        </p>
+      </div>
+      
+      <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">4. Cookies & Analytic Architectures</h2>
+        <p class="legal-text">
+         To secure streamlined site delivery and track communication integrity, our web server uses technical tracking components known as cookies. These files assist in monitoring visitor paths and optimization patterns. By accepting our gateway consent popup, you approve of this functional integration.
+        </p>
+      </div>
+
+      <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">5. Intellectual Property & Prohibitions</h2>
+        <p class="legal-text">
+         The visual framework, structural grids, branding elements, and core texts on this platform remain the properties of Accura Management. Users are strictly barred from deploying malicious automation, unauthorized mirroring, or scraped elements from our corporate presentation maps.
+        </p>
+      </div>
+
+      <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">6. Limitation of Liability</h2>
+        <p class="legal-text">
+         While Accura Management designs premium growth architectures utilizing advanced market insights, all actual continuous organic growth depends closely on dynamic third-party algorithm conditions. We hold zero liability for unexpected algorithmic updates or external interface updates beyond our organizational control boundaries.
+        </p>
+      </div>
+
+      <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">7. Governing Law</h2>
+        <p class="legal-text">
+         These operating rules and legal understandings shall be analyzed and governed entirely under the laws and regulatory jurisdictions of Poland.
+        </p>
+      </div>
+
+      <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">8. Non-Guarantee of Specific Outcomes</h2>
+        <p class="legal-text">
+         Accura Management delivers premium, high-tier brand growth frameworks and strategy execution. However, because social media networks and digital distribution algorithms are owned and operated by third parties (such as Meta, ByteDance, Google, etc.), we explicitly disclaim any absolute guarantee regarding precise follower counts, viral reach metrics, or conversion rates. Past successful campaign architectures do not guarantee identical future results due to continuous external market shifts.
+        </p>
+      </div>
+
+      <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">9. Algorithmic Changes & Platform Penalties</h2>
+        <p class="legal-text">
+         We execute all management strategies in compliance with current public social media guidelines. Accura Management shall not be held liable or responsible for platform-wide algorithm updates, temporary shadowbans, account suspensions, or automated restrictions imposed by third-party networks, provided such actions did not directly result from gross intentional negligence by our team.
+        </p>
+      </div>
+
+            <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">10. Client Responsibilities & Asset Approvals</h2>
+        <p class="legal-text">
+         To maintain campaign velocity, the Client is required to provide necessary access tokens, materials, and internal feedback within a reasonable timeframe (not exceeding 5 business days from the request). Failure to deliver required media or feedback on time relieves Accura Management from any project delays. Furthermore, once a strategy blueprint or digital media file is formally approved by the Client, the Company is not responsible for any errors discovered after deployment.
+        </p>
+      </div>
+
+            <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">11. Intellectual Property Protection (No-Derivatives)</h2>
+        <p class="legal-text">
+         All custom blueprints, growth workflows, PR systems, and operational methodologies shared with the Client during consulting sessions or campaigns remain the intellectual property of Accura Management. Clients are granted a non-exclusive, non-transferable license to use these models for their own brand only. Sharing, reselling, or repackaging our internal growth strategies for external business entities or competitors is strictly illegal and will result in immediate termination of service and legal action.
+        </p>
+      </div>
+
+            <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">12. Payment Terms, Default & Refund Policy</h2>
+        <p class="legal-text">
+         All retainers, configuration fees, and campaign budgets are billed in advance according to the chosen plan (Starter, Growth, Pro, Ultimate). Due to the direct allocation of technical hours, structural mapping, and digital labor, all payments made to Accura Management are strictly non-refundable. If a client attempts an unauthorized chargeback or payment reversal through financial institutions without prior written mediation, we reserve the right to suspend all active service nodes immediately and claim administrative recovery fees.
+        </p>
+      </div>
+
+            <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">13. Service Termination & Offboarding</h2>
+        <p class="legal-text">
+         Either party may terminate an ongoing monthly service subscription by providing written notice at least 14 days prior to the next billing cycle. Upon termination, all client access keys and access rights will be revoked, and Accura Management will safely offboard all managed assets. No data or partial operational assets will be transferred if there are outstanding invoices on the client's account.
+        </p>
+      </div>
+
+            <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">14. Indemnification</h2>
+        <p class="legal-text">
+         The Client agrees to defend, indemnify, and hold harmless Accura Management, its directors, and employees from any claims, damages, liabilities, or legal expenses arising out of any copyright infringement, trademark disputes, or misleading claims present within the materials supplied by the Client for campaign distribution.
+        </p>
+      </div>
+
+            <div class="legal-card animate-on-scroll fade-up">
+        <h2 class="legal-section-title">15. Amendments to These Terms</h2>
+        <p class="legal-text">
+         Accura Management reserves the right to modify, adjust, or completely update these Terms of Service at any time without individual direct notification. The most current operational version will always be live at accuramanagement.pl/terms.html. Continued usage of our web platform or engagement in our management cycles after updates are published constitutes absolute acceptance of the revised framework.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <a href="index.html" class="logo">
+          <img src="assets/images/aasd-96x96.png" width="40px">
+          <div class="logo-text">ACCURA<span>MANAGEMENT</span></div>
+        </a>
+
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="plans.html">Plans</a></li>
+          <li><a href="tos.html">Terms & Policy</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Accura Management. All rights reserved.</div>
+        <div>Legal Infrastructure & Compliance</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const ambientGlow = document.getElementById('ambientGlow');
+    window.addEventListener('mousemove', (e) => {
+      ambientGlow.style.left = e.clientX + 'px';
+      ambientGlow.style.top = e.clientY + 'px';
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('is-visible');
+          else entry.target.classList.remove('is-visible');
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+      });
+    });
+  </script>
+</body>
+</html>
