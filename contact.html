@@ -170,6 +170,60 @@
       line-height: 1.6;
     }
 
+    /* Social Media Channels Section */
+    .social-channels {
+      margin-top: 30px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .social-channels-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .social-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 2px;
+      color: var(--text-cream);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: var(--transition-smooth);
+    }
+
+    .social-btn svg {
+      color: var(--accent-bronze);
+      transition: var(--transition-smooth);
+    }
+
+    .social-btn:hover {
+      border-color: var(--accent-bronze);
+      background: var(--bg-card-hover);
+      color: var(--accent-bronze);
+      box-shadow: 0 4px 15px rgba(197, 181, 161, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .social-btn:hover svg {
+      transform: scale(1.1);
+    }
+
     /* Form Styles */
     .form-group { margin-bottom: 24px; }
 
@@ -214,6 +268,11 @@
     .btn-submit:hover {
       background: var(--text-cream);
       box-shadow: 0 10px 30px rgba(197, 181, 161, 0.25);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     .form-status {
@@ -273,6 +332,8 @@
       .nav-cta-item { margin-top: 15px; }
       .contact-info-card, .contact-form-container { padding: 30px 20px; }
       .footer-top, .footer-bottom { flex-direction: column; gap: 20px; text-align: center; }
+      .social-buttons { flex-direction: column; width: 100%; }
+      .social-btn { width: 100%; justify-content: center; }
     }
   </style>
 </head>
@@ -351,6 +412,28 @@
           <div class="notice-box">
             <strong>Advisory Note:</strong> Use for official strategic inquiries. For general questions, please utilize authorized channels.
           </div>
+
+          <!-- Official Social Channels Section -->
+          <div class="social-channels">
+            <span class="social-channels-label">Authorized Channels</span>
+            <div class="social-buttons">
+              <a href="https://x.com/Accura_Mgmt" target="_blank" rel="noopener noreferrer" class="social-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                Twitter / X
+              </a>
+
+              <a href="https://www.instagram.com/accura.management" target="_blank" rel="noopener noreferrer" class="social-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                Instagram
+              </a>
+
+              <a href="https://mail.google.com/mail/u/0/?fs=1&to=accura.contact@gmail.com&tf=cm" target="_blank" rel="noopener noreferrer" class="social-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                Gmail
+              </a>
+            </div>
+          </div>
+
         </div>
 
         <!-- Form Card -->
@@ -359,8 +442,7 @@
             Thank you. Your strategic brief has been logged. Our advisory team will reach out within 24 hours.
           </div>
 
-          <!-- Integracja z Formspree wysyłająca maile na contact@accuramanagement.pl -->
-          <form id="contactForm" action="https://formspree.io/f/contact@accuramanagement.pl" method="POST">
+          <form id="contactForm" action="https://formsubmit.co/ajax/contact@accuramanagement.pl" method="POST">
             <div class="form-group">
               <label class="form-label" for="name">Your Full Name</label>
               <input type="text" id="name" name="name" class="form-input" placeholder="e.g. Alexander Vance" required>
@@ -374,9 +456,9 @@
             <div class="form-group">
               <label class="form-label" for="tier">Target Service Tier</label>
               <select id="tier" name="tier" class="form-select">
-                <option value="core">Core Growth Retainer</option>
-                <option value="dominance">Market Dominance Architecture</option>
-                <option value="enterprise">Bespoke Enterprise Scope</option>
+                <option value="Core Growth Retainer">Core Growth Retainer</option>
+                <option value="Market Dominance Architecture">Market Dominance Architecture</option>
+                <option value="Bespoke Enterprise Scope">Bespoke Enterprise Scope</option>
               </select>
             </div>
 
@@ -459,7 +541,7 @@
       });
     });
 
-    // Obsługa wysyłania formularza przez Fetch API (AJAX)
+    // Obsługa Formularza
     const form = document.getElementById('contactForm');
     const formStatus = document.getElementById('formStatus');
     const submitBtn = document.getElementById('submitBtn');
@@ -469,12 +551,12 @@
       submitBtn.disabled = true;
       submitBtn.innerText = 'Sending...';
 
-      const data = new FormData(event.target);
+      const formData = new FormData(event.target);
 
       try {
         const response = await fetch(event.target.action, {
-          method: form.method,
-          body: data,
+          method: 'POST',
+          body: formData,
           headers: {
             'Accept': 'application/json'
           }
@@ -485,13 +567,12 @@
           formStatus.innerText = 'Thank you. Your strategic brief has been logged. Our advisory team will reach out within 24 hours.';
           form.reset();
         } else {
-          const result = await response.json();
           formStatus.style.display = 'block';
-          formStatus.innerText = result.errors ? result.errors.map(error => error.message).join(", ") : "Oops! There was a problem submitting your form";
+          formStatus.innerText = "Oops! Something went wrong. Please try again.";
         }
       } catch (error) {
         formStatus.style.display = 'block';
-        formStatus.innerText = "Oops! There was a problem submitting your form";
+        formStatus.innerText = "Connection error. Please try again later.";
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerText = 'Submit Briefing';
