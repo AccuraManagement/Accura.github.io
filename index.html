@@ -151,7 +151,7 @@
 
       <!-- Desktop Nav -->
       <nav class="hidden md:flex items-center gap-1 bg-white/5 p-1 rounded-full border border-white/10">
-        <button onclick="navigateTo('index')" id="nav-index" class="nav-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 text-slate-400 hover:text-white hover:bg-white/10">
+        <button onclick="navigateTo('index')" id="nav-index" class="nav-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 text-black bg-accura-lime">
           Home
         </button>
         <button onclick="navigateTo('plans')" id="nav-plans" class="nav-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 text-slate-400 hover:text-white hover:bg-white/10">
@@ -160,7 +160,7 @@
         <button onclick="navigateTo('contact')" id="nav-contact" class="nav-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 text-slate-400 hover:text-white hover:bg-white/10">
           Contact
         </button>
-        <button onclick="navigateTo('tos')" id="nav-tos" class="nav-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 text-black bg-accura-lime">
+        <button onclick="navigateTo('tos')" id="nav-tos" class="nav-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 text-slate-400 hover:text-white hover:bg-white/10">
           Terms
         </button>
       </nav>
@@ -196,7 +196,7 @@
     <!-- ========================================== -->
     <!-- VIEW 1: HOME -->
     <!-- ========================================== -->
-    <section id="view-index" class="page-view hidden">
+    <section id="view-index" class="page-view">
       
       <!-- Hero Section -->
       <div class="max-w-7xl mx-auto px-4 sm:px-8 pt-12 pb-20 relative">
@@ -568,7 +568,7 @@
     <!-- ========================================== -->
     <!-- VIEW 4: TOS -->
     <!-- ========================================== -->
-    <section id="view-tos" class="page-view">
+    <section id="view-tos" class="page-view hidden">
       <div class="max-w-4xl mx-auto px-4 sm:px-8 py-16">
         
         <!-- Header -->
@@ -1004,7 +1004,10 @@
     }
 
     window.addEventListener('scroll', checkScrollReveals);
-    window.addEventListener('load', checkScrollReveals);
+    window.addEventListener('load', () => {
+      navigateTo('index'); // Uruchomienie strony na widoku Home
+      checkScrollReveals();
+    });
   </script>
 </body>
 </html>
