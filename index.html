@@ -361,7 +361,7 @@
               </ul>
             </div>
 
-            <button onclick="navigateTo('contact')" class="w-full py-4 rounded-full glass-editorial text-white font-heading font-bold uppercase tracking-wider hover:bg-white hover:text-black transition">
+            <button onclick="selectPlanAndNavigate('Starter')" class="w-full py-4 rounded-full glass-editorial text-white font-heading font-bold uppercase tracking-wider hover:bg-white hover:text-black transition cursor-pointer">
               Select Starter Plan
             </button>
           </div>
@@ -406,7 +406,7 @@
               </ul>
             </div>
 
-            <button onclick="navigateTo('contact')" class="w-full py-4 rounded-full bg-accura-lime text-black font-heading font-bold uppercase tracking-wider hover:bg-white transition">
+            <button onclick="selectPlanAndNavigate('Growth vip')" class="w-full py-4 rounded-full bg-accura-lime text-black font-heading font-bold uppercase tracking-wider hover:bg-white transition cursor-pointer">
               Select Growth Plan
             </button>
           </div>
@@ -443,7 +443,7 @@
               </ul>
             </div>
 
-            <button onclick="navigateTo('contact')" class="w-full py-4 rounded-full glass-editorial text-white font-heading font-bold uppercase tracking-wider hover:bg-white hover:text-black transition">
+            <button onclick="selectPlanAndNavigate('Enterprise')" class="w-full py-4 rounded-full glass-editorial text-white font-heading font-bold uppercase tracking-wider hover:bg-white hover:text-black transition cursor-pointer">
               Request Custom Quote
             </button>
           </div>
@@ -507,10 +507,10 @@
               </button>
             </div>
 
-            <!-- Form with Web3Forms AJAX endpoint -->
+            <!-- Form with Web3Forms API endpoint and your Access Key -->
             <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-5">
               <!-- Web3Forms Access Key -->
-              <input type="hidden" name="access_key" value="ee76faeb-fdfa-4715-bd7f-2fb05a566b70">
+              <input type="hidden" name="access_key" value="6eed62c1-f55b-4c2f-b061-aad6293f94f4">
               <!-- Hidden input storing selected plan -->
               <input type="hidden" id="tier" name="tier" value="Starter" required>
 
@@ -891,22 +891,40 @@
       }
     }
 
-    // --- PLAN SELECTION AND FORM SUBMISSION HANDLING ---
+    // --- PLAN SELECTION AND NAVIGATION ---
     const planButtons = document.querySelectorAll('.plan-btn');
     const tierInput = document.getElementById('tier');
 
+    // Funkcja wywoływana po kliknięciu wybranego planu w "Plans & Pricing"
+    function selectPlanAndNavigate(planName) {
+      // 1. Zmień widok na kontakt
+      navigateTo('contact');
+
+      // 2. Znajdź przycisk odpowiadający wybranemu planowi i zaktualizuj jego stan oraz ukryte pole
+      planButtons.forEach(btn => {
+        const btnPlan = btn.getAttribute('data-plan');
+        // Porównanie ignorujące wielkość liter i spacje dla pewności dopasowania
+        if (btnPlan.toLowerCase().trim() === planName.toLowerCase().trim()) {
+          btn.classList.add('bg-accura-lime', 'text-black');
+          btn.classList.remove('text-white');
+          tierInput.value = btnPlan;
+        } else {
+          btn.classList.remove('bg-accura-lime', 'text-black');
+          btn.classList.add('text-white');
+        }
+      });
+    }
+
+    // Obsługa ręcznego klikania w przyciski planów bezpośrednio w formularzu kontaktowym
     planButtons.forEach(button => {
       button.addEventListener('click', () => {
-        // Remove active styling from all buttons
         planButtons.forEach(btn => {
           btn.classList.remove('bg-accura-lime', 'text-black');
           btn.classList.add('text-white');
         });
-        // Add active styling to clicked button
         button.classList.add('bg-accura-lime', 'text-black');
         button.classList.remove('text-white');
         
-        // Save value in hidden form field
         tierInput.value = button.getAttribute('data-plan');
       });
     });
